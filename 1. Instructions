@@ -1,2 +1,27 @@
 First, I created a combined dataset.
-    --Why? The main data source has latitude/longitude, which need to be joined with a shapefile. 
+    
+    --Why? (a) There are many files being combined, and it got confusing in Tableau. For example, every file had latitude/longitude.
+            If I needed to plot the hospitals, I had to make sure I was grabbing lat/long for hospitals instead of
+            parks, rail stations, affordable housing, etc. By combining the data sets in Python, I could give each column a name that 
+            described which data set it belonged to (e.g., all the hospitals have '(H)' appended to each column name).
+            
+            (b) It gave me an opportunity to filter to the relevant columns before importing to Tableau.
+            
+            (c) It's an easily repeatable process. For example, if you have to start over on the Tableau workbook, you would need to
+            load the raw data, perform all the joins, and then rename the columns, clean the data, etc., vs. just re-running this 
+            Jupyter notebook.
+            
+    --What? The output is a single CSV which combines the data for: crime, affordable housing, hospitals, police stations, and rail stations.
+    
+    --How? Using the Filter_Crime_Data.ipynb in this repository
+    
+    --NOTE: the crime data set is too big to be stored in this repository, so you will have to download a version from the city of
+            Chicago website to run it. Link is listed in the Jupyter notebook.
+            
+Then, I loaded into Tableau. 
+
+    --How? (a) Connect to data source: Combined_Data.csv (the output of Filter_Crime_Data.ipynb). Double click on the table...this should
+            pull up a "logical" table, which is the only way to do a join (instead of a relationship), which is needed for joining
+            the lat/long to the shapefile.
+    
+            (b) Connect to second data source: 
