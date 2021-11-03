@@ -1,0 +1,43 @@
+First, I created a combined dataset.
+    
+    --Why? (a) There are many files being combined, and it got confusing in Tableau. For example, every file had latitude/longitude.
+            If I needed to plot the hospitals, I had to make sure I was grabbing lat/long for hospitals instead of
+            parks, rail stations, affordable housing, etc. By combining the data sets in Python, I could give each column a name that 
+            described which data set it belonged to (e.g., all the hospitals have '(H)' appended to each column name).
+            
+            (b) It gave me an opportunity to filter to the relevant columns before importing to Tableau.
+            
+            (c) It's an easily repeatable process. For example, if you have to start over on the Tableau workbook, you would need to
+            load the raw data, perform all the joins, and then rename the columns, clean the data, etc., vs. just re-running this 
+            Jupyter notebook.
+            
+    --What? The output is a single CSV which combines the data for: crime, affordable housing, hospitals, police stations, and rail stations.
+    
+    --How? Using the Filter_Crime_Data.ipynb in this repository
+    
+    --NOTE: the crime data set is too big to be stored in this repository, so you will have to download a version from the city of
+            Chicago website to run it. Link is listed in the Jupyter notebook.
+            
+Then, I loaded into Tableau. 
+
+    --How? (a) Connect to data source: Combined_Data.csv (the output of Filter_Crime_Data.ipynb). Important--double click on the 
+            'Combined_Data.csv' table...this should pull up a "logical" table, which is the only way to do a join (instead of a 
+            relationship), which is needed for joining the lat/long to the shapefile.
+    
+            (b) Connect to second data source: CPD_Parks_0919.zip. This is the shapefile downloaded from the city of Chicago website.
+            
+            (c) Drag 'CPD_Parks_0919' to join it with the first data source. You should see a venn diagram (if not, and it just
+            draws a line, then make sure you double clicked on the 'Combined_Data.csv' label first. For the fields to join, do a
+            calculated field on the left: MAKEPOINT(['Latitude'],['Longitude']). Select Geometry on the right. And make sure to
+            change the "=" to "intersects." This will connect the data to the shapefile, which allows everything to be plotted.
+            
+            (d) Add another data source: Chicago_Population_Counts.csv. Because we're doing crime rates per population, we need this file.
+            For the connection, connect the zip code of the shapefile (believe it should be called Zip1) to the zip code of the
+            population file. Note: you may have to convert one or both to a string by using a calculation: "STR([Zip])" or similar.
+            
+            (e) Click the 'x' to close out the logical table with the venn diagrams. You should now just see "Combined_Data.csv." 
+            Now, you'll need to connect to the parks data, which is another shapefile. Since it has zip codes (unlike the crime data),
+            you don't need to use the venn diagram / "intersects" method. You can just drag it in and set the zip codes equal.
+            
+Then, it was just a matter of doing some calculations within Tableau to get everything to work properly. See Chicago_Crimes.twbx
+            on my Tableau Public page.
