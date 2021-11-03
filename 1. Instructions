@@ -1,0 +1,2 @@
+First, I created a combined dataset.
+    --Why? The main data source has latitude/longitude, which need to be joined with a shapefile. 
